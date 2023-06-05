@@ -8,6 +8,8 @@ import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'virtual:svg-icons-register'
 import GlobalComponent from '@/components/index.ts'
+import router from '@/router'
+import pinia from '@/store'
 const app = createApp(App)
 app.use(ElementPlus, {
   locale: zhCn,
@@ -16,5 +18,7 @@ app.use(ElementPlus, {
 //   app.component(key, component)
 // }
 app.use(GlobalComponent)
+app.use(router)
+app.use(pinia)
 import '@/styles/index.scss'
 app.mount('#app')
