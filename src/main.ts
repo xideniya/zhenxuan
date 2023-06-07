@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import ElementPlus from 'element-plus'
+import '@/styles/index.scss'
 // import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'element-plus/dist/index.css'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -20,5 +21,5 @@ app.use(ElementPlus, {
 app.use(GlobalComponent)
 app.use(router)
 app.use(pinia)
-import '@/styles/index.scss'
+
 app.mount('#app')

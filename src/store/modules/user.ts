@@ -1,13 +1,17 @@
 import { defineStore } from 'pinia'
 import type { loginForm, loginResponse } from '@/api/user/type.ts'
 import type { User } from './types/types.ts'
-import { reqLogin } from '@/api/user'
+import { reqLogin, reqUserinfo } from '@/api/user'
 import { set_token, get_token } from '@/utils/token.ts'
+import { routes } from '@/router/routes.ts'
 
 const useUserStore = defineStore('User', {
   state: (): User => {
     return {
       token: get_token(),
+      routes: routes,
+      username: '',
+      avatar: '',
     }
   },
   actions: {
@@ -23,6 +27,13 @@ const useUserStore = defineStore('User', {
         }
       } catch (error) {
         console.log(error)
+      }
+    },
+    async getUserInfo() {
+      const result = await reqUserinfo()
+      if (result.code === 200) {
+        this.username = result.data.checkUser.username
+        this.avatar = result.data.checkUser.avatar
       }
     },
   },

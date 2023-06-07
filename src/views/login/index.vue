@@ -3,16 +3,22 @@
     <el-row>
       <el-col :span="12" :xs="0"></el-col>
       <el-col :span="12" :xs="24">
-        <el-form class="el_form">
+        <!--登录的表单-->
+        <el-form
+          class="el_form"
+          :model="loginForm"
+          :rules="rules"
+          ref="loginElForm"
+        >
           <h1 class="h1">Hello</h1>
           <h2 class="h2">欢迎来到甄选</h2>
-          <el-form-item>
+          <el-form-item prop="username">
             <el-input
               :prefix-icon="User as string"
               v-model="loginForm.username"
             ></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input
               show-password
               :prefix-icon="Lock as string"
@@ -51,7 +57,10 @@ const loginForm = reactive({
 let loading = ref(false)
 const router = useRouter()
 const userStore = useUserStore()
+let loginElForm = ref()
 const login = async () => {
+  // 全部的表单项通过再发请求
+  await loginElForm.value.validate()
   loading.value = true
   let message = getTime()
   try {
@@ -70,6 +79,17 @@ const login = async () => {
       message: (error as Error).message,
     })
   }
+}
+//表单校验对象
+const rules = {
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 5, max: 10, message: '用户名长度5到10位', trigger: 'change' },
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, max: 10, message: '密码长度6到10位', trigger: 'change' },
+  ],
 }
 </script>
 
