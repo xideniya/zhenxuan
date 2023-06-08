@@ -45,19 +45,20 @@
 import { User, Lock } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
 import useUserStore from '@/store/modules/user.ts'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ElNotification } from 'element-plus'
 import { getTime } from '@/utils/time.ts'
-
 const loginForm = reactive({
   username: 'admin',
-  password: '111111',
+  password: 'atguigu123',
 })
 // 控制按钮加载效果
 let loading = ref(false)
 const router = useRouter()
+const route = useRoute()
 const userStore = useUserStore()
 let loginElForm = ref()
+// 用户登录
 const login = async () => {
   // 全部的表单项通过再发请求
   await loginElForm.value.validate()
@@ -66,7 +67,11 @@ const login = async () => {
   try {
     await userStore.userLogin(loginForm)
     loading.value = false
-    await router.push('/')
+    // 登录后返回退出前的路由
+    let path: any = route.query.redirect ? route.query.redirect : '/'
+    await router.push({
+      path,
+    })
     ElNotification({
       type: 'success',
       message: '登录成功',

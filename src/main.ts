@@ -21,5 +21,6 @@ app.use(ElementPlus, {
 app.use(GlobalComponent)
 app.use(router)
 app.use(pinia)
+import './authentication.ts'
 
 app.mount('#app')

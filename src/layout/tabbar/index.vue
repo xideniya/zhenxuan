@@ -46,7 +46,7 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>退出登录</el-dropdown-item>
+            <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -56,8 +56,9 @@
 
 <script setup lang="ts">
 import useSettingStore from '@/store/modules/setting.ts'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import useUserStore from '@/store/modules/user.ts'
+import { ElNotification } from 'element-plus'
 // 控制展开图标
 let settingStore = useSettingStore()
 const handelFold = () => {
@@ -83,6 +84,24 @@ const handleFullScreen = () => {
 }
 // 用户信息
 const userStore = useUserStore()
+// 退出登录
+const router = useRouter()
+const logout = async () => {
+  try {
+    await userStore.userLogout()
+    await router.push({
+      path: '/login',
+      query: {
+        redirect: route.fullPath,
+      },
+    })
+  } catch (error) {
+    ElNotification({
+      type: 'error',
+      message: (error as Error).message,
+    })
+  }
+}
 </script>
 
 <style scoped lang="scss">
