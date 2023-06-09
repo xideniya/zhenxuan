@@ -3,6 +3,7 @@ import type { User } from './types/types.ts'
 import { reqLogin, reqUserinfo, reqLogout } from '@/api/user'
 import { set_token, get_token, remove_token } from '@/utils/token.ts'
 import { routes } from '@/router/routes.ts'
+import { loginFormData } from '@/api/user/type.ts'
 
 const useUserStore = defineStore('User', {
   state: (): User => {
@@ -15,8 +16,8 @@ const useUserStore = defineStore('User', {
   },
   actions: {
     // 登录
-    async userLogin(data: any) {
-      const result: any = await reqLogin(data)
+    async userLogin(data: loginFormData) {
+      const result = await reqLogin(data)
       if (result.code === 200) {
         this.token = result.data as string
         set_token(result.data as string)

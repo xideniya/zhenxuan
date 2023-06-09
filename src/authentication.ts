@@ -17,7 +17,7 @@ router.beforeEach(async (to, from, next) => {
   // 开启进度条
   NProgress.start()
   // 改变网页标题
-  document.title = setting.title + to.meta.title
+  document.title = setting.title + '-' + to.meta.title
   // 获取用户信息和token
   const token = userStore.token
   const username = userStore.username
