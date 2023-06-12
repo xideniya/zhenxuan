@@ -45,7 +45,7 @@
       </template>
     </el-dialog>
     <!--    表格区域-->
-    <el-table style="margin: 10px 0" border :data="hasTrademark" :key="itemKey">
+    <el-table style="margin: 10px 0" border :data="hasTrademark">
       <el-table-column
         label="序号"
         width="80px"
@@ -117,9 +117,8 @@ import type {
 const currentPage = ref(1)
 const pageSize = ref(3)
 let total = ref(0)
-let hasTrademark = reactive<Records>([])
-// 解决数据改变el-table视图不更新问题
-let itemKey = ref(false)
+// ref重新赋值不丢失响应式
+let hasTrademark = ref<Records>([])
 // 获取对话框中表单组件实例，方便进行校验
 let formRef = ref()
 
@@ -129,9 +128,8 @@ const getHasTrademark = async () => {
     pageSize.value,
   )
   if (result.code === 200) {
-    hasTrademark = result.data.records
+    hasTrademark.value = result.data.records
     // 解决数据改变el-table视图不更新问题
-    itemKey.value = !itemKey.value
     total.value = result.data.total
   }
 }
@@ -243,7 +241,7 @@ const rules = reactive<FormRules>({
 const confirmEvent = async (row, index) => {
   const result = await reqRemoveTrademark(row.id)
   if (result.code === 200) {
-    if (index === 0 && hasTrademark.length === 1) {
+    if (index === 0 && hasTrademark.value.length === 1) {
       currentPage.value = currentPage.value - 1 ? currentPage.value - 1 : 1
     }
     ElMessage.success(`删除${row.tmName}成功！`)
