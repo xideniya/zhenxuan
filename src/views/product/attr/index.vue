@@ -183,14 +183,8 @@ const getAttrInfoList = async (categoryId) => {
 // 三级分类改变时触发回调
 const categoryChangeHandler = async (categoryId: CategoryId) => {
   obj = categoryId
-  if (
-    !(
-      categoryId.category_1_id &&
-      categoryId.category_2_id &&
-      categoryId.category_3_id
-    )
-  ) {
-    // 有一个id不存在就清空数据
+  if (!categoryId.category_3_id) {
+    // 三级id不存在就清空数据
     attrInfoList.value = []
     return undefined
   }
