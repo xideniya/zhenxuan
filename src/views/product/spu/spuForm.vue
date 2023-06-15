@@ -268,7 +268,6 @@ const handleAddAttr = () => {
   selectedAttr.value = undefined
 }
 const handleBlur = (row) => {
-  console.log(111)
   if (row.input.trim() === '') {
     ElMessage.error('属性值不能为空')
     row.inputVisible = false

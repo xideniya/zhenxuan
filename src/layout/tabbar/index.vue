@@ -24,16 +24,18 @@
       <el-button
         size="small"
         icon="Refresh"
+        title="刷新"
         circle
         @click="handleRefresh"
       ></el-button>
       <el-button
         size="small"
         icon="FullScreen"
+        title="全屏"
         circle
         @click="handleFullScreen"
       ></el-button>
-      <el-button size="small" icon="Setting" circle></el-button>
+      <el-button size="small" icon="Setting" circle title="设置"></el-button>
       <!--      用户头像-->
       <img :src="userStore.avatar" alt="头像" style="border-radius: 50%" />
       <!--      下拉菜单-->

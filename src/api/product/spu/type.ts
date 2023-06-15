@@ -67,3 +67,31 @@ export interface BaseSaleAttr {
 export interface BaseSaleAttrResponse extends ResponseData {
   data: BaseSaleAttr[]
 }
+
+export interface Attr {
+  attrId: undefined | number //平台属性的ID
+  valueId: undefined | number //属性值的ID
+}
+
+export interface saleArr {
+  saleAttrId: undefined | number //属性ID
+  saleAttrValueId: undefined | number //属性值的ID
+}
+export interface SkuData {
+  category3Id: undefined | number //三级分类的ID
+  spuId: undefined | number //已有的SPU的ID
+  tmId: undefined | number //SPU品牌的ID
+  skuName: string //sku名字
+  price: undefined | number //sku价格
+  weight: undefined | number //sku重量
+  skuDesc: string //sku的描述
+  skuAttrValueList?: Attr[]
+  skuSaleAttrValueList?: saleArr[]
+  skuDefaultImg: string //sku图片地址
+  isSale?: number
+}
+
+//获取SKU数据接口的ts类型
+export interface SkuInfoData extends ResponseData {
+  data: SkuData[]
+}

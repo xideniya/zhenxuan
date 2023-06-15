@@ -3,6 +3,7 @@ import {
   BaseSaleAttrResponse,
   imageListResponse,
   SaleAttrResponse,
+  SkuInfoData,
   SPU,
   SPUResponseData,
   trademarkResponse,
@@ -17,6 +18,11 @@ enum API {
   ADD_SPU_URL = '/admin/product/saveSpuInfo',
   // 修改已有的spu
   UPDATE_SPU_URL = '/admin/product/updateSpuInfo',
+  // 添加sku
+  SAVE_SKU_INFO_URL = '/admin/product/saveSkuInfo',
+  FIND_SKU_BY_SPUID = '/admin/product/findBySpuId',
+  // 删除spu
+  DELETE_SPU = '/admin/product/deleteSpu',
 }
 export const reqGetProduct = (
   page: number,
@@ -47,4 +53,13 @@ export const addOrUpdateSPu = (data: SPU) => {
   } else {
     return request.post<any, any>(API.UPDATE_SPU_URL, data)
   }
+}
+export const saveSkuInfo = (data: any) => {
+  return request.post<any, any>(API.SAVE_SKU_INFO_URL, data)
+}
+export const productFindBySpuId = (spuId: number) => {
+  return request.get<any, SkuInfoData>(API.FIND_SKU_BY_SPUID + '/' + spuId)
+}
+export const deleteSPU = (spuId: number) => {
+  return request.delete<any, any>(API.DELETE_SPU + '/' + spuId)
 }

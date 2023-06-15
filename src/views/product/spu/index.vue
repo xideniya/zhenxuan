@@ -33,11 +33,37 @@
                 icon="Edit"
                 type="warning"
                 size="small"
+                title="编辑spu"
                 @click="updateSPU(row)"
               ></el-button>
-              <el-button icon="InfoFilled" type="info" size="small"></el-button>
-              <el-button icon="Delete" type="danger" size="small"></el-button>
-              <el-button icon="Plus" type="primary" size="small"></el-button>
+              <el-button
+                icon="InfoFilled"
+                type="info"
+                size="small"
+                title="查看sku"
+                @click="viewSKU(row)"
+              ></el-button>
+              <el-popconfirm
+                width="200"
+                :title="`确定删除${row.spuName}吗？`"
+                @confirm="deleteSpu(row)"
+              >
+                <template #reference>
+                  <el-button
+                    icon="Delete"
+                    type="danger"
+                    size="small"
+                    title="删除spu"
+                  ></el-button>
+                </template>
+              </el-popconfirm>
+              <el-button
+                icon="Plus"
+                type="primary"
+                size="small"
+                title="添加sku"
+                @click="newSKU(row)"
+              ></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -62,17 +88,46 @@
       </div>
       <div v-show="scene === 2">
         <!--        添加sku-->
-        <sku-form></sku-form>
+        <sku-form ref="skuFormComponent" @skuSceneChange="skuScene"></sku-form>
       </div>
+      <el-dialog v-model="dialogVisible" title="Tips" width="30%">
+        <el-table :data="skuInfo" border>
+          <el-table-column label="名称" prop="skuName"></el-table-column>
+          <el-table-column label="描述" prop="skuDesc"></el-table-column>
+          <el-table-column label="图片">
+            <template #default="{ row }">
+              <img
+                :src="row.skuDefaultImg"
+                :alt="row.skuName"
+                style="width: 60px; height: 60px"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column label="价格" prop="price"></el-table-column>
+        </el-table>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="dialogVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="dialogVisible = false">
+              Confirm
+            </el-button>
+          </span>
+        </template>
+      </el-dialog>
     </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { reqGetProduct } from '@/api/product/spu/index.ts'
+import {
+  deleteSPU,
+  productFindBySpuId,
+  reqGetProduct,
+} from '@/api/product/spu/index.ts'
 import SpuForm from '@/views/product/spu/spuForm.vue'
 import SkuForm from '@/views/product/spu/skuForm.vue'
+import { ElMessage } from 'element-plus'
 let currentPage = ref(1)
 let pageSize = ref(5)
 let total = ref(0)
@@ -82,7 +137,10 @@ let spuList = ref([])
 let scene = ref(0)
 // 获取子组件实例
 let spuFormComponent = ref()
-
+// 控制对话框
+let dialogVisible = ref(false)
+// sku列表
+let skuInfo = ref([])
 const handleSizeChange = () => {
   currentPage.value = 1
   getProduct()
@@ -128,6 +186,42 @@ const handleSceneChange = (obj) => {
 const updateSPU = (row) => {
   spuFormComponent.value.initSpu(row)
   scene.value = 1
+}
+let skuFormComponent = ref()
+// 添加sku
+const newSKU = (row) => {
+  scene.value = 2
+  skuFormComponent.value.initSku(categoryIdList.value, row.id, row.tmId)
+}
+const skuScene = (s) => {
+  scene.value = s
+}
+const viewSKU = async (row) => {
+  let result = await productFindBySpuId(row.id)
+  if (result.code === 200) {
+    dialogVisible.value = true
+    skuInfo.value = result.data
+  } else {
+    ElMessage.error('获取数据失败')
+  }
+}
+const deleteSpu = async (row) => {
+  let result = await deleteSPU(row.id)
+  if (result.code === 200) {
+    ElMessage({
+      type: 'success',
+      message: `删除${row.spuName}成功`,
+    })
+    if (spuList.value.length === 1) {
+      currentPage.value = currentPage.value - 1 ? currentPage.value - 1 : 1
+    }
+    await getProduct()
+  } else {
+    ElMessage({
+      type: 'error',
+      message: `删除${row.spuName}失败`,
+    })
+  }
 }
 </script>
 
