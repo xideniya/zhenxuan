@@ -1,6 +1,6 @@
 <template>
   <div class="logo">
-    <img src="../../../public/logo.png" :alt="setting.title" />
+    <img src="../../../logo.png" :alt="setting.title" />
     <p v-show="settingStore.flag === 'Expand'">{{ setting.title }}</p>
   </div>
 </template>
