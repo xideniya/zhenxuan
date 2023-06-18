@@ -7,6 +7,8 @@ import 'element-plus/dist/index.css'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+// 暗黑模式
+import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'virtual:svg-icons-register'
 import GlobalComponent from '@/components/index.ts'
 import router from '@/router'
