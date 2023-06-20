@@ -2,7 +2,7 @@
   <div>
     <el-card>
       <el-row>
-        <el-col span="8">
+        <el-col :span="8">
           <img
             :src="userStore.avatar"
             alt="头像"
@@ -10,7 +10,7 @@
             class="avatar"
           />
         </el-col>
-        <el-col span="16" class="title">
+        <el-col :span="16" class="title">
           <div class="message">{{ message }}好，{{ userStore.username }}!</div>
           <div class="content">甄选运营平台</div>
         </el-col>
