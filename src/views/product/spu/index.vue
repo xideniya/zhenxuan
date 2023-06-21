@@ -128,11 +128,16 @@ import {
 import SpuForm from '@/views/product/spu/spuForm.vue'
 import SkuForm from '@/views/product/spu/skuForm.vue'
 import { ElMessage } from 'element-plus'
-let currentPage = ref(1)
-let pageSize = ref(5)
-let total = ref(0)
-let categoryIdList = ref({})
-let spuList = ref([])
+import { CategoryIdList, SkuData, SPUList } from '@/api/product/spu/type.ts'
+let currentPage = ref<number>(1)
+let pageSize = ref<number>(5)
+let total = ref<number>(0)
+let categoryIdList = ref<CategoryIdList>({
+  category_1_id: undefined,
+  category_2_id: undefined,
+  category_3_id: undefined,
+})
+let spuList = ref<SPUList>([])
 // 切换展示结构
 let scene = ref(0)
 // 获取子组件实例
@@ -140,7 +145,7 @@ let spuFormComponent = ref()
 // 控制对话框
 let dialogVisible = ref(false)
 // sku列表
-let skuInfo = ref([])
+let skuInfo = ref<SkuData[]>([])
 const handleSizeChange = () => {
   currentPage.value = 1
   getProduct()
@@ -158,7 +163,7 @@ const getProduct = async () => {
   total.value = result.data.total
   spuList.value = result.data.records
 }
-const handleC3Change = (id) => {
+const handleC3Change = (id: any) => {
   categoryIdList.value = id
   if (id.category_3_id) {
     getProduct()
@@ -174,7 +179,7 @@ const handelAddSPU = () => {
   )
 }
 
-const handleSceneChange = (obj) => {
+const handleSceneChange = (obj: any) => {
   const { sceneFromSPU, isSave } = obj
   // 新增跳转第一页
   if (!isSave) {
@@ -183,20 +188,20 @@ const handleSceneChange = (obj) => {
   scene.value = sceneFromSPU
   getProduct()
 }
-const updateSPU = (row) => {
+const updateSPU = (row: any) => {
   spuFormComponent.value.initSpu(row)
   scene.value = 1
 }
 let skuFormComponent = ref()
 // 添加sku
-const newSKU = (row) => {
+const newSKU = (row: any) => {
   scene.value = 2
   skuFormComponent.value.initSku(categoryIdList.value, row.id, row.tmId)
 }
-const skuScene = (s) => {
+const skuScene = (s: number) => {
   scene.value = s
 }
-const viewSKU = async (row) => {
+const viewSKU = async (row: any) => {
   let result = await productFindBySpuId(row.id)
   if (result.code === 200) {
     dialogVisible.value = true
@@ -205,7 +210,7 @@ const viewSKU = async (row) => {
     ElMessage.error('获取数据失败')
   }
 }
-const deleteSpu = async (row) => {
+const deleteSpu = async (row: any) => {
   let result = await deleteSPU(row.id)
   if (result.code === 200) {
     ElMessage({

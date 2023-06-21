@@ -1,7 +1,7 @@
 <template>
   <div class="count-container">
     <div class="top">
-      <p class="title">性别统计</p>
+      <p class="title">游客行为</p>
       <p class="bg"></p>
     </div>
     <div class="main" ref="main"></div>

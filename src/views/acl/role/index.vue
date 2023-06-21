@@ -138,21 +138,21 @@ import {
 } from '@/api/acl/role'
 import { ElMessage, FormRules } from 'element-plus'
 import { RoleData } from '@/api/acl/role/type.ts'
-const currentPage = ref(1)
-const pageSize = ref(5)
-let roleList = ref([])
-let keyword = ref('')
-let total = ref(0)
-let centerDialogVisible = ref(false)
+const currentPage = ref<number>(1)
+const pageSize = ref<number>(5)
+let roleList = ref<any>([])
+let keyword = ref<string>('')
+let total = ref<number>(0)
+let centerDialogVisible = ref<boolean>(false)
 let role = ref<RoleData>({
   id: undefined,
   roleName: '',
 })
-let formVc = ref()
-let drawer = ref(false)
-const treeData = ref([])
-let treeDefault = ref([])
-let tree = ref()
+let formVc = ref<any>()
+let drawer = ref<boolean>(false)
+const treeData = ref<any>([])
+let treeDefault = ref<any>([])
+let tree = ref<any>()
 const handleSizeChange = () => {
   initRoleList()
 }
@@ -227,12 +227,12 @@ const handleNewRoleCancel = () => {
   centerDialogVisible.value = false
 }
 //编辑角色
-const editRole = (row) => {
+const editRole = (row: any) => {
   Object.assign(role.value, row)
   centerDialogVisible.value = true
 }
 // 删除角色
-const deleteRole = async (row) => {
+const deleteRole = async (row: any) => {
   let result = await reqDeleteRole(row.id)
   if (result.code === 200) {
     ElMessage({
@@ -252,7 +252,7 @@ const rules = reactive<FormRules>({
   ],
 })
 //分配权限
-const assignAuthority = async (row) => {
+const assignAuthority = async (row: any) => {
   drawer.value = true
   Object.assign(role.value, row)
   let result = await reqAllPermission(row.id)
@@ -266,8 +266,8 @@ const defaultProps = {
   label: 'name',
 }
 
-const filterSelected = (arr) => {
-  arr.forEach((item) => {
+const filterSelected: any = (arr: any) => {
+  arr.forEach((item: any) => {
     if (item.children && item.children.length >= 1) {
       filterSelected(item.children)
     }

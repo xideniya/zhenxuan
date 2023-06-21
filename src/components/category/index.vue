@@ -86,7 +86,7 @@ const getC3 = async () => {
 onMounted(() => {
   getC3()
 })
-const cat_1_changeHandle = async (val) => {
+const cat_1_changeHandle = async (val: any) => {
   categoryId.category_2_id = undefined
   categoryId.category_3_id = undefined
   categoryList.category_2_list = []
@@ -99,7 +99,7 @@ const cat_1_changeHandle = async (val) => {
     ElMessage.error('获取二级数据失败')
   }
 }
-const cat_2_changeHandle = async (val) => {
+const cat_2_changeHandle = async (val: any) => {
   categoryId.category_3_id = undefined
   categoryList.category_3_list = []
   $emit('categoryChange', categoryId)

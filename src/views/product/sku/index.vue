@@ -162,12 +162,13 @@ import {
 } from '@/api/product/sku'
 import { ElMessage } from 'element-plus'
 import { SkuData } from '@/api/product/spu/type.ts'
-const drawer = ref(false)
-let currentPage = ref(1)
-let pageSize = ref(5)
-let productList = ref([])
-let total = ref(0)
+const drawer = ref<boolean>(false)
+let currentPage = ref<number>(1)
+let pageSize = ref<number>(5)
+let productList = ref<any>([])
+let total = ref<number>(0)
 let skuInfo = ref<SkuData>({
+  skuImageList: undefined,
   category3Id: undefined,
   price: undefined,
   skuDefaultImg: '',
@@ -195,7 +196,7 @@ const initProductList = async () => {
   }
 }
 // 上架下架
-const OnSaleOrCancelSale = async (row) => {
+const OnSaleOrCancelSale = async (row: any) => {
   let result = await reqOnSaleOrCancelSale(row.id, row.isSale)
   if (result.code === 200) {
     ElMessage({
@@ -211,7 +212,7 @@ const OnSaleOrCancelSale = async (row) => {
   }
 }
 // sku详情
-const details = async (id) => {
+const details = async (id: any) => {
   drawer.value = true
   let result = await reqSkuInfo(id)
   if (result.code === 200) {
@@ -219,7 +220,7 @@ const details = async (id) => {
   }
 }
 // 删除sku
-const deleteSku = async (row) => {
+const deleteSku = async (row: any) => {
   let result = await reqDeleteSku(row.id)
   if (result.code === 200) {
     ElMessage({

@@ -214,7 +214,7 @@ const addData = async () => {
   }
 }
 // 编辑用户
-const editUser = (row) => {
+const editUser = (row: any) => {
   userParams.value.id = row.id
   userParams.value.name = row.name
   userParams.value.username = row.username
@@ -272,25 +272,25 @@ const drawerClose = () => {
   formRef.value.clearValidate()
 }
 // 表单校验规则
-const validatorUsername = (rule: any, value: any, cb: any) => {
-  if (value.trim().length >= 5) {
-    cb()
+const validatorUsername = (...arg: any) => {
+  if (arg[1].trim().length >= 5) {
+    arg[2]()
   } else {
-    cb(new Error('用户名字至少5位'))
+    arg[2](new Error('用户名字至少5位'))
   }
 }
-const validatorName = (rule: any, value: any, cb: any) => {
-  if (value.trim().length >= 5) {
-    cb()
+const validatorName = (...arg: any) => {
+  if (arg[0].trim().length >= 5) {
+    arg[2]()
   } else {
-    cb(new Error('昵称至少5位'))
+    arg[2]()(new Error('昵称至少5位'))
   }
 }
-const validatorPassword = (rule: any, value: any, cb: any) => {
-  if (value.trim().length >= 6) {
-    cb()
+const validatorPassword = (...arg: any) => {
+  if (arg[0].trim().length >= 6) {
+    arg[2]()
   } else {
-    cb(new Error('密码至少6位'))
+    arg[2](new Error('密码至少6位'))
   }
 }
 const rules = {
@@ -317,12 +317,12 @@ const rules = {
   ],
 }
 // 分配角色按钮
-const assignRoles = async (row) => {
+const assignRoles = async (row: UserParams) => {
   userParams.value.id = row.id
   userParams.value.name = row.name
   userParams.value.username = row.username
   drawerRole.value = true
-  let result = await reqRole(row.id)
+  let result = await reqRole(row.id as number)
   if (result.code === 200) {
     roles.value = result.data.allRolesList
     checkedRoles.value = result.data.assignRoles
@@ -363,8 +363,8 @@ const RoleDetermination = async () => {
     ElMessage.error('分配角色失败')
   }
 }
-const removeUserSingal = async (row) => {
-  let result = await reqRemoveUserByID(row.id)
+const removeUserSingal = async (row: UserParams) => {
+  let result = await reqRemoveUserByID(row.id as number)
   if (result.code === 200) {
     ElMessage({
       type: 'success',
@@ -382,8 +382,8 @@ const removeUserSingal = async (row) => {
   }
 }
 let deleteGroup = ref([])
-const handleSelectionChange = async (e) => {
-  deleteGroup.value = e.map((item) => {
+const handleSelectionChange = async (e: any) => {
+  deleteGroup.value = e.map((item: any) => {
     return item.id
   })
 }

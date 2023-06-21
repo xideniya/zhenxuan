@@ -19,14 +19,14 @@
 import moment from 'moment'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 let time = ref(moment().format('YYYY-MM-DD hh:mm:ss'))
-let timepiece
+let timepiece = ref<number>(0)
 onMounted(() => {
-  timepiece = setInterval(() => {
+  timepiece.value = setInterval(() => {
     time.value = moment().format('YYYY-MM-DD hh:mm:ss')
   }, 1000)
 })
 onBeforeUnmount(() => {
-  clearInterval(timepiece)
+  clearInterval(timepiece.value)
 })
 </script>
 

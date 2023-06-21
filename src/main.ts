@@ -13,6 +13,8 @@ import 'virtual:svg-icons-register'
 import GlobalComponent from '@/components/index.ts'
 import router from '@/router'
 import pinia from '@/store'
+import { permissionConfig } from '@/directive/button-permission.ts'
+
 const app = createApp(App)
 app.use(ElementPlus, {
   locale: zhCn,
@@ -23,6 +25,8 @@ app.use(ElementPlus, {
 app.use(GlobalComponent)
 app.use(router)
 app.use(pinia)
+//用户按钮权限全局自定义指令v-permission
+app.directive('permission', permissionConfig)
 import './authentication.ts'
 
 app.mount('#app')

@@ -48,7 +48,7 @@ onMounted(() => {
         },
         itemStyle: {
           borderRadius: [0, 8, 8, 0],
-          color: function (params) {
+          color: function (params: any) {
             // 定义一个颜色集合
             let colorList = [
               '#52A8FF',

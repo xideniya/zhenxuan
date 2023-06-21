@@ -69,6 +69,7 @@
             type="primary"
             size="small"
             icon="Edit"
+            v-permission="'btn.Trademark.update'"
             @click="editTrademark(row)"
           ></el-button>
           <!--          删除按钮-->
@@ -77,6 +78,7 @@
             :title="`确定要删除${row.tmName}？`"
             confirm-button-text="是"
             cancel-button-text="否"
+            v-permission="'btn.Trademark.update.delete'"
             @confirm="confirmEvent(row, $index)"
           >
             <template #reference>
@@ -160,7 +162,7 @@ const addTrademark = () => {
   dialogFormVisible.value = true
 }
 // 修改品牌
-const editTrademark = (row) => {
+const editTrademark = (row: any) => {
   tradeMarkParams.tmName = row.tmName
   tradeMarkParams.logoUrl = row.logoUrl
   tradeMarkParams.id = row.id
@@ -171,7 +173,7 @@ const editTrademark = (row) => {
 import { ElMessage, FormRules } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 // 图片上传后钩子
-const handleAvatarSuccess = (response, uploadFile) => {
+const handleAvatarSuccess = (response: any, uploadFile: any) => {
   if (response.code === 200) {
     tradeMarkParams.logoUrl = uploadFile.response.data
     // 图片校验成功，清理错误提示信息
@@ -179,7 +181,7 @@ const handleAvatarSuccess = (response, uploadFile) => {
   }
 }
 // 图片上传前的钩子
-const beforeAvatarUpload = (rawFile) => {
+const beforeAvatarUpload = (rawFile: any) => {
   if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/webp') {
     ElMessage.error('图片必须是JPG或者WEBP格式。')
     return false
@@ -219,18 +221,18 @@ const handleCancel = () => {
 }
 
 // 自定义校验规则
-const validatorTmName = (rule, value, cb) => {
-  if (value.trim().length >= 2) {
-    cb()
+const validatorTmName = (...arg: any) => {
+  if (arg[1].trim().length >= 2) {
+    arg[2]()
   } else {
-    cb(new Error('品牌名称需要大于等于2位'))
+    arg[2](new Error('品牌名称需要大于等于2位'))
   }
 }
-const validatorLogoUrl = (rule, value, cb) => {
-  if (value) {
-    cb()
+const validatorLogoUrl = (...arg: any) => {
+  if (arg[1]) {
+    arg[2]()
   } else {
-    cb(new Error('需要上传图片'))
+    arg[2](new Error('需要上传图片'))
   }
 }
 // 表单数据校验 规则
@@ -238,7 +240,7 @@ const rules = reactive<FormRules>({
   tmName: [{ required: true, trigger: 'blur', validator: validatorTmName }],
   logoUrl: [{ required: true, validator: validatorLogoUrl }],
 })
-const confirmEvent = async (row, index) => {
+const confirmEvent = async (row: any, index: any) => {
   const result = await reqRemoveTrademark(row.id)
   if (result.code === 200) {
     if (index === 0 && hasTrademark.value.length === 1) {

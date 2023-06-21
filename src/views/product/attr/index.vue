@@ -107,7 +107,7 @@
                 placeholder="输入属性值名称"
                 v-model="row.valueName"
                 :ref="
-                  (vc) => {
+                  (vc:any) => {
                     inputList[$index] = vc
                   }
                 "
@@ -133,7 +133,7 @@
           <el-button
             type="primary"
             @click="handleSave"
-            :disabled="!attrParams.attrValueList.length > 0"
+            :disabled="!attrParams.attrValueList.length"
           >
             保存
           </el-button>
@@ -150,11 +150,16 @@ import {
   reqGetAttrInfoList,
   reqRemoveAttr,
 } from '@/api/product/attr'
-import { Attr, CategoryId } from '@/api/product/attr/type.ts'
+import {
+  Attr,
+  AttrValue,
+  AttrValueList,
+  CategoryId,
+} from '@/api/product/attr/type.ts'
 import { nextTick, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { cloneDeep } from 'lodash-es'
-let attrInfoList = ref([])
+let attrInfoList = ref<AttrValueList>([])
 let flag = ref(true)
 let obj = reactive<CategoryId>({
   category_1_id: undefined,
@@ -170,9 +175,9 @@ let attrParams = reactive<Attr>({
   attrValueList: [],
 })
 // 存储input组件实例
-const inputList = reactive([])
+const inputList = reactive<any>([])
 // 根据三级ID获取属性列表
-const getAttrInfoList = async (categoryId) => {
+const getAttrInfoList = async (categoryId: any) => {
   const result = await reqGetAttrInfoList(categoryId)
   if (result.code === 200) {
     attrInfoList.value = result.data
@@ -191,7 +196,7 @@ const categoryChangeHandler = async (categoryId: CategoryId) => {
   await getAttrInfoList(categoryId)
 }
 // 修改属性
-const handleEdit = (row) => {
+const handleEdit = (row: any) => {
   flag.value = false
   // 深拷贝，不能直接赋值，防止丢失响应式
   Object.assign(attrParams, cloneDeep(row))
@@ -240,7 +245,7 @@ const handleSave = async () => {
   }
 }
 // 输入框失去焦点
-const handleBlur = (row, index) => {
+const handleBlur = (row: any, index: any) => {
   // 属性值不能为空
   if (row.valueName.trim() === '') {
     ElMessage({
@@ -269,28 +274,28 @@ const handleBlur = (row, index) => {
   row.flag = false
 }
 // 静态展示切换为input框
-const handelChangeToInput = (row, index) => {
+const handelChangeToInput = (row: any, index: any) => {
   row.flag = true
   // 等dom结构更新完成，自动获取焦点
   nextTick(() => {
     inputList[index].focus()
   })
 }
-const handleDelete = (index) => {
+const handleDelete = (index: number) => {
   attrParams.attrValueList.splice(index, 1)
 }
-const handleDeleteAttr = async (row) => {
-  let result = await reqRemoveAttr(row.id)
+const handleDeleteAttr = async (row: AttrValue) => {
+  let result = await reqRemoveAttr(row.id as number)
   if (result.code === 200) {
     ElMessage({
       type: 'success',
-      message: `删除属性${row.attrName}成功`,
+      message: `删除属性${row['attrName']}成功`,
     })
     await getAttrInfoList(obj)
   } else {
     ElMessage({
       type: 'error',
-      message: `删除属性${row.attrName}失败`,
+      message: `删除属性${row['attrName']}失败`,
     })
   }
 }

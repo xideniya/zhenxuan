@@ -35,7 +35,8 @@ router.beforeEach(async (to, from, next) => {
         // 先获取用户信息再放行
         try {
           await userStore.getUserInfo()
-          next()
+          // 刷新的时候是异步路由，获取到用户信息，路由没加载完毕出现白屏
+          next({ ...to })
         } catch (error) {
           // token过期，获取不到用户信息
           // 退出登录

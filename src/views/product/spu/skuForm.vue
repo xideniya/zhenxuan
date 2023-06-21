@@ -108,12 +108,14 @@ import {
 } from '@/api/product/spu'
 import { SkuData } from '@/api/product/spu/type.ts'
 import { ElMessage } from 'element-plus'
-let attrList = ref([]) //平台属性
-let imgList = ref([]) // 图片列表
-let saleAttrsList = ref([]) // 销售属性
-let tableComponent = ref() // 图片表格的实例
+import { CategoryId } from '@/api/product/attr/type.ts'
+let attrList = ref<any>([]) //平台属性
+let imgList = ref<any>([]) // 图片列表
+let saleAttrsList = ref<any>([]) // 销售属性
+let tableComponent = ref<any>() // 图片表格的实例
 // 数据收集
 let skuParams = ref<SkuData>({
+  skuImageList: undefined,
   category3Id: undefined,
   skuName: '',
   price: undefined,
@@ -125,14 +127,18 @@ let skuParams = ref<SkuData>({
   skuAttrValueList: [],
   skuSaleAttrValueList: [],
 })
-const initSku = async (categoryIdList, id, tmId) => {
+const initSku = async (
+  categoryIdList: CategoryId,
+  id: number,
+  tmId: number,
+) => {
   skuParams.value.spuId = id
   skuParams.value.tmId = tmId
   skuParams.value.category3Id = categoryIdList.category_3_id
   // 平台属性
   let result1 = await reqGetAttrInfoList(categoryIdList)
   if (result1.code === 200) {
-    attrList.value = result1.data.map((item) => ({
+    attrList.value = result1.data.map((item: any) => ({
       ...item,
       inputValue: undefined,
     }))
@@ -157,9 +163,9 @@ const initSku = async (categoryIdList, id, tmId) => {
 defineExpose({ initSku })
 const emit = defineEmits(['skuSceneChange'])
 
-const SetDefaultPicture = (row) => {
+const SetDefaultPicture = (row: any) => {
   // 去掉所有勾选
-  imgList.value.forEach((item) => {
+  imgList.value.forEach((item: any) => {
     tableComponent.value.toggleRowSelection(item, false)
     item.selected = false
   })
@@ -170,20 +176,20 @@ const SetDefaultPicture = (row) => {
 const save = async () => {
   // 整理数据
   skuParams.value.skuAttrValueList = attrList.value
-    .filter((item) => {
+    .filter((item: any) => {
       return item.inputValue
     })
-    .map((item) => {
+    .map((item: any) => {
       return {
         attrId: item.id,
         valueId: item.inputValue,
       }
     })
   skuParams.value.skuSaleAttrValueList = saleAttrsList.value
-    .filter((item) => {
+    .filter((item: any) => {
       return item.inputValue
     })
-    .map((item) => {
+    .map((item: any) => {
       return {
         saleAttrId: item.id,
         saleAttrValueId: item.inputValue,

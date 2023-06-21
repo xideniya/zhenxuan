@@ -3,6 +3,11 @@ interface ResponseData {
   message: string
   ok: boolean
 }
+export interface CategoryIdList {
+  category_3_id: number | undefined
+  category_1_id: number | undefined
+  category_2_id: number | undefined
+}
 export interface SPU {
   id?: number | undefined
   spuName: string
@@ -51,6 +56,8 @@ export interface SpuSaleAttrValue {
 export interface SaleAttr {
   id?: number
   spuId?: number
+  inputVisible?: boolean
+  input?: string
   baseSaleAttrId: number
   saleAttrName: string
   spuSaleAttrValueList: SpuSaleAttrValue[]
@@ -69,11 +76,15 @@ export interface BaseSaleAttrResponse extends ResponseData {
 }
 
 export interface Attr {
+  id?: number | undefined
   attrId: undefined | number //平台属性的ID
   valueId: undefined | number //属性值的ID
+  valueName?: ''
 }
 
 export interface saleArr {
+  id?: number
+  saleAttrValueName?: string
   saleAttrId: undefined | number //属性ID
   saleAttrValueId: undefined | number //属性值的ID
 }
@@ -89,6 +100,7 @@ export interface SkuData {
   skuSaleAttrValueList?: saleArr[]
   skuDefaultImg: string //sku图片地址
   isSale?: number
+  skuImageList: any
 }
 
 //获取SKU数据接口的ts类型

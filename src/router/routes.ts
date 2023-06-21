@@ -1,4 +1,4 @@
-export const routes = [
+export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index.vue'),
@@ -30,12 +30,33 @@ export const routes = [
       },
     ],
   },
+
+  {
+    path: '/screen',
+    component: () => import('@/views/screen/index.vue'),
+    meta: {
+      title: '数据大屏',
+      hidden: false,
+      icon: 'Platform',
+    },
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/404/index.vue'),
+    name: '404',
+    meta: {
+      title: '404',
+      hidden: true,
+    },
+  },
+]
+export const asyncRoutes = [
   {
     path: '/acl',
+    name: 'Acl',
     component: () => import('@/layout/index.vue'),
     meta: {
       title: '权限管理',
-      name: 'acl',
       hidden: false,
       icon: 'Stamp',
     },
@@ -43,7 +64,7 @@ export const routes = [
     children: [
       {
         path: '/acl/user',
-        name: 'user',
+        name: 'User',
         component: () => import('@/views/acl/user/index.vue'),
         meta: {
           title: '用户管理',
@@ -53,7 +74,7 @@ export const routes = [
       },
       {
         path: '/acl/permission',
-        name: 'permission',
+        name: 'Permission',
         component: () => import('@/views/acl/permission/index.vue'),
         meta: {
           title: '菜单管理',
@@ -63,7 +84,7 @@ export const routes = [
       },
       {
         path: '/acl/role',
-        name: 'role',
+        name: 'Role',
         component: () => import('@/views/acl/role/index.vue'),
         meta: {
           title: '角色管理',
@@ -121,24 +142,9 @@ export const routes = [
       },
     ],
   },
-  {
-    path: '/screen',
-    component: () => import('@/views/screen/index.vue'),
-    meta: {
-      title: '数据大屏',
-      hidden: false,
-      icon: 'Platform',
-    },
-  },
-  {
-    path: '/404',
-    component: () => import('@/views/404/index.vue'),
-    name: '404',
-    meta: {
-      title: '404',
-      hidden: true,
-    },
-  },
+]
+
+export const anyRoutes = [
   {
     path: '/:pathMatch(.*)*',
     redirect: '/404',

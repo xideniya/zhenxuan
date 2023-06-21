@@ -6,4 +6,5 @@ export interface User {
   routes: RouteRecordRaw[]
   username: string
   avatar: string
+  buttons: string[]
 }

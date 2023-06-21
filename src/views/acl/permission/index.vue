@@ -88,11 +88,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { reqALlMenu, reqDeleteMenu, reqNewORUpdateMenu } from '@/api/acl/menu'
-import { MenuParams } from '@/api/acl/menu/type.ts'
+import { MenuData, MenuParams } from '@/api/acl/menu/type.ts'
 import { ElMessage } from 'element-plus'
 
-let allMenu = ref([])
-let dialogVisible = ref(false)
+let allMenu = ref<MenuData[]>([])
+let dialogVisible = ref<boolean>(false)
 let menuParams = ref<MenuParams>({
   code: '',
   id: undefined,
@@ -100,7 +100,7 @@ let menuParams = ref<MenuParams>({
   name: '',
   pid: 0,
 })
-let isLoading = ref(true)
+let isLoading = ref<boolean>(true)
 const initAllMenu = async () => {
   let result = await reqALlMenu()
   if (result.code === 200) {
@@ -112,14 +112,14 @@ onMounted(() => {
   initAllMenu()
 })
 // 新增菜单
-const addMenu = (row) => {
+const addMenu = (row: any) => {
   //4级时添加按钮禁用了，无需判断4级时的情况
   dialogVisible.value = true
   menuParams.value.pid = row.id
   menuParams.value.level = row.level + 1
 }
 // 编辑菜单
-const updateMenu = (row) => {
+const updateMenu = (row: MenuParams) => {
   dialogVisible.value = true
   menuParams.value.id = row.id
   menuParams.value.pid = row.pid
@@ -156,7 +156,7 @@ const handleCancel = () => {
   })
   dialogVisible.value = false
 }
-const deleteMenu = async (row) => {
+const deleteMenu = async (row: any) => {
   let result = await reqDeleteMenu(row.id as number)
   if (result.code === 200) {
     ElMessage({

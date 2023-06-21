@@ -96,7 +96,7 @@
                 v-if="row.inputVisible"
                 v-model="row.input"
                 :ref="
-                  (vc) => {
+                  (vc:any) => {
                     inputComponent[$index] = vc
                   }
                 "
@@ -153,10 +153,16 @@ import {
   reqGetTrademarkList,
   reqSpuSaleAttrList,
 } from '@/api/product/spu'
-import { SPU } from '@/api/product/spu/type.ts'
-import { ElMessage } from 'element-plus'
+import {
+  BaseSaleAttr,
+  SaleAttr,
+  SPU,
+  SpuSaleAttrValue,
+  Trademark,
+} from '@/api/product/spu/type.ts'
+import { ElMessage, UploadUserFile } from 'element-plus'
 const emit = defineEmits(['sceneChange'])
-let tradeMarkList = ref([]) //系统品牌列表
+let tradeMarkList = ref<Trademark[]>([]) //系统品牌列表
 let spuInfo = ref<SPU>({
   id: undefined,
   spuName: '',
@@ -166,11 +172,11 @@ let spuInfo = ref<SPU>({
   spuSaleAttrList: [],
   spuImageList: [],
 })
-let spuSaleAttrList = ref([]) //spu属性列表
-let baseSaleAttrList = ref([]) // 系统中的基础属性列表
-let selectedAttr = ref(undefined) //选中的销售属性id
-const fileList = ref([]) // 照片墙展示
-let inputComponent = reactive([]) // 组件实例数组
+let spuSaleAttrList = ref<SaleAttr[]>([]) //spu属性列表
+let baseSaleAttrList = ref<BaseSaleAttr[]>([]) // 系统中的基础属性列表
+let selectedAttr = ref<number | undefined>(undefined) //选中的销售属性id
+const fileList = ref<UploadUserFile[]>([]) // 照片墙展示
+let inputComponent = reactive<any>([]) // 组件实例数组
 // 剩余的属性列表
 let restAttr = computed(() => {
   return baseSaleAttrList.value.filter((item1) => {
@@ -197,16 +203,16 @@ const clearData = () => {
   spuSaleAttrList.value = []
 }
 // 预览窗口控制
-const dialogImageUrl = ref('')
-const dialogVisible = ref(false)
+const dialogImageUrl = ref<string>('')
+const dialogVisible = ref<boolean>(false)
 
 //照片墙点击预览
-const handlePictureCardPreview = (uploadFile) => {
+const handlePictureCardPreview = (uploadFile: any) => {
   dialogImageUrl.value = uploadFile.url!
   dialogVisible.value = true
 }
 // 修改属性初始化
-const initSpu = async (spu) => {
+const initSpu = async (spu: any) => {
   // el-table跟踪不到数据变化，但数据还是响应式的
   // spuInfo.value = spu
   // 下面这种方法el-table数据可以跟踪到
@@ -233,7 +239,7 @@ const initSpu = async (spu) => {
     })
   }
 }
-const addedPropertyInitialization = async (c3id) => {
+const addedPropertyInitialization = async (c3id: number) => {
   spuInfo.value.category3Id = c3id
   let result2 = await reqBaseSaleAttrList()
   if (result2.code === 200) {
@@ -247,7 +253,7 @@ const addedPropertyInitialization = async (c3id) => {
 defineExpose({ initSpu, addedPropertyInitialization })
 import { nextTick } from 'vue'
 import { ElInput } from 'element-plus'
-const showInput = (row, $index) => {
+const showInput = (row: SaleAttr, $index: number) => {
   row.inputVisible = true
   nextTick(() => {
     inputComponent[$index].focus()
@@ -255,7 +261,7 @@ const showInput = (row, $index) => {
 }
 // 新增属性
 const handleAddAttr = () => {
-  const obj = baseSaleAttrList.value.find((item) => {
+  const obj: any = baseSaleAttrList.value.find((item: any) => {
     return item.id === selectedAttr.value
   })
   spuSaleAttrList.value.push({
@@ -267,7 +273,7 @@ const handleAddAttr = () => {
   })
   selectedAttr.value = undefined
 }
-const handleBlur = (row) => {
+const handleBlur = (row: any) => {
   if (row.input.trim() === '') {
     ElMessage.error('属性值不能为空')
     row.inputVisible = false
@@ -276,7 +282,7 @@ const handleBlur = (row) => {
   }
   if (
     row.spuSaleAttrValueList.find(
-      (item) => item.saleAttrValueName === row.input,
+      (item: any) => item.saleAttrValueName === row.input,
     )
   ) {
     ElMessage.error('属性值不能重复')
@@ -291,13 +297,13 @@ const handleBlur = (row) => {
   row.input = ''
   row.inputVisible = false
 }
-const handleClose = (tag, row) => {
+const handleClose = (tag: SpuSaleAttrValue, row: SaleAttr) => {
   row.spuSaleAttrValueList.splice(row.spuSaleAttrValueList.indexOf(tag), 1)
 }
 // 保存按钮
 const save = async () => {
   // 整理数据
-  spuInfo.value.spuImageList = fileList.value.map((item) => ({
+  spuInfo.value.spuImageList = fileList.value.map((item: any) => ({
     imgName: item.name,
     imgUrl: item.response ? item.response.data : item.url,
   }))

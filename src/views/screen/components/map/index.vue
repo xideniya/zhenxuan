@@ -8,7 +8,7 @@ import { onMounted, ref } from 'vue'
 import chinajson from './china.json'
 let mapContainer = ref()
 onMounted(() => {
-  echarts.registerMap('china', chinajson)
+  echarts.registerMap('china', chinajson as any)
   let myCharts = echarts.init(mapContainer.value)
   myCharts.setOption({
     geo: {

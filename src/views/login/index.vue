@@ -14,14 +14,14 @@
           <h2 class="h2">欢迎来到甄选</h2>
           <el-form-item prop="username">
             <el-input
-              :prefix-icon="User as string"
+              :prefix-icon="User as any"
               v-model="loginForm.username"
             ></el-input>
           </el-form-item>
           <el-form-item prop="password">
             <el-input
               show-password
-              :prefix-icon="Lock as string"
+              :prefix-icon="Lock as any"
               v-model="loginForm.password"
             ></el-input>
           </el-form-item>
