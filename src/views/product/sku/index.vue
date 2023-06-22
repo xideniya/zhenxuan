@@ -165,7 +165,7 @@ import { SkuData } from '@/api/product/spu/type.ts'
 const drawer = ref<boolean>(false)
 let currentPage = ref<number>(1)
 let pageSize = ref<number>(5)
-let productList = ref<any>([])
+let productList = ref<SkuData[]>([])
 let total = ref<number>(0)
 let skuInfo = ref<SkuData>({
   skuImageList: undefined,
@@ -212,7 +212,7 @@ const OnSaleOrCancelSale = async (row: any) => {
   }
 }
 // sku详情
-const details = async (id: any) => {
+const details = async (id: number) => {
   drawer.value = true
   let result = await reqSkuInfo(id)
   if (result.code === 200) {

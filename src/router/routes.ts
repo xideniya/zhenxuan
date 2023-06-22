@@ -41,12 +41,12 @@ export const constantRoutes = [
     },
   },
   {
-    path: '/404',
+    path: '/:pathMatch(.*)*',
     component: () => import('@/views/404/index.vue'),
-    name: '404',
     meta: {
-      title: '404',
+      title: '',
       hidden: true,
+      icon: 'Platform',
     },
   },
 ]
@@ -141,17 +141,5 @@ export const asyncRoutes = [
         },
       },
     ],
-  },
-]
-
-export const anyRoutes = [
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/404',
-    name: 'Any',
-    meta: {
-      title: '任意',
-      hidden: true,
-    },
   },
 ]

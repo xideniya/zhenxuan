@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import type { User } from './types/types.ts'
 import { reqLogin, reqUserinfo, reqLogout } from '@/api/user'
 import { set_token, get_token, remove_token } from '@/utils/token.ts'
-import { constantRoutes, asyncRoutes, anyRoutes } from '@/router/routes.ts'
+import { constantRoutes, asyncRoutes } from '@/router/routes.ts'
 import { loginFormData } from '@/api/user/type.ts'
 import filterRoute from '@/utils/filterroute.ts'
 import router from '@/router'
@@ -42,10 +42,10 @@ const useUserStore = defineStore('User', {
         // 根据权限筛选用户动态路由
         const arr = filterRoute(asyncRoutes, result.data.routes)
         // 用于左侧导航栏展示
-        this.routes = [...constantRoutes, ...arr, ...anyRoutes]
+        this.routes = [...constantRoutes, ...arr]
         // 动态添加路由
-        const arr2 = [...arr, ...anyRoutes]
-        arr2.forEach((item: any) => {
+
+        arr.forEach((item: any) => {
           router.addRoute(item)
         })
         return 'ok'
